@@ -64,11 +64,16 @@ start-reth-host: ## start a local ephemeral `reth` node on host machine
 	--ipcpath ${IPC_PATH}
 	
 start-geth: ## start an ephemeral `geth` node with docker
+	cd ~
+	git clone -b v1.14.2 https://github.com/Fairblock/op_geth_precompile
+	cd op_geth_precompile
+	docker build -t op_geth_precompile .
+	cd beacon-kit
 	rm -rf ${ETH_DATA_DIR}
 	docker run \
 	--rm -v $(PWD)/${TESTAPP_FILES_DIR}:/${TESTAPP_FILES_DIR} \
 	-v $(PWD)/.tmp:/.tmp \
-	ethereum/client-go init \
+	op_geth_precompile init \
 	--datadir ${ETH_DATA_DIR} \
 	${ETH_GENESIS_PATH}
 
@@ -78,7 +83,7 @@ start-geth: ## start an ephemeral `geth` node with docker
 	-p 8551:8551 \
 	--rm -v $(PWD)/${TESTAPP_FILES_DIR}:/${TESTAPP_FILES_DIR} \
 	-v $(PWD)/.tmp:/.tmp \
-	ethereum/client-go \
+	op_geth_precompile \
 	--http \
 	--http.addr 0.0.0.0 \
 	--http.api eth,net \
