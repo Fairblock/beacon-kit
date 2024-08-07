@@ -68,7 +68,7 @@ start-geth: ## start an ephemeral `geth` node with docker
 	git clone -b v1.14.2 https://github.com/Fairblock/op_geth_precompile
 	cd op_geth_precompile
 	docker build -t op_geth_precompile .
-	cd beacon-kit
+	cd ~/beacon-kit
 	rm -rf ${ETH_DATA_DIR}
 	docker run \
 	--rm -v $(PWD)/${TESTAPP_FILES_DIR}:/${TESTAPP_FILES_DIR} \
